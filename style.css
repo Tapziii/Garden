@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+    min-height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d3d0d 0%, #1a5a1a 30%, #2d7a2d 60%, #1f4d1f 100%);
+    color: white;
+    -webkit-font-smoothing:antialiased;
+}
+:root{
+    --accent1: #ffffff;
+    --accent2: #f0f0f0;
+    --neon: #ffffff;
+}
+
+.stage{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:10px;
+}
+
+.glitch{ position: relative; display:flex; align-items:center; justify-content:center }
+.main{ font-size:clamp(72px, 18vw, 220px); letter-spacing: -6px; line-height:0.8; font-weight:900; color: white; mix-blend-mode:screen }
+.main-shadow{ position:absolute; color:var(--accent1); left:3px; top:2px; filter: blur(6px); opacity:0.85; pointer-events:none }
+.main-shift{ position:absolute; color:var(--accent2); left:-5px; top:-3px; mix-blend-mode:difference; opacity:0.8; clip-path: inset(0 0 50% 0); transform: translateY(-6px); animation: shiver 2s infinite linear }
+
+.sub{ font-size:16px; opacity:0.95; color: white; text-align:center }
+
+.wtf-btn{ background:transparent; color:var(--neon); border:2px solid rgba(126,255,245,0.2); padding:12px 22px; border-radius:12px; font-weight:700; cursor:pointer; backdrop-filter: blur(6px); transition:transform .12s ease }
+.wtf-btn:active{ transform:scale(.98) }
+
+/* Blobs */
+.blobs{ position:absolute; inset:0; pointer-events:none }
+.blob{ position:absolute; border-radius:50%; filter: blur(24px) saturate(160%); opacity:0.9; mix-blend-mode:screen; animation: float var(--dur) ease-in-out infinite }
+
+@keyframes float{
+ 0%{ transform: translateY(0) translateX(0) rotate(0) }
+ 50%{ transform: translateY(-40px) translateX(20px) rotate(30deg) }
+ 100%{ transform: translateY(0) translateX(0) rotate(0) }
+}
+
+/* custom cursor & trail - hidden */
+.cursor{ display:none; }
+#trail{ position:fixed; inset:0; pointer-events:none; z-index:9998 }
+.trail-dot{ position:absolute; width:10px; height:10px; border-radius:50%; background:var(--neon); opacity:.25; filter:blur(8px); mix-blend-mode:screen }
+
+/* chaos mode */
+body.chaos{ filter: contrast(140%) hue-rotate(40deg) saturate(160%) }
+body.chaos .main{ animation: pulse 0.15s infinite; transform-origin:center }
+
+@keyframes pulse{ 0%{ transform:scale(1) } 50%{ transform:scale(1.04) } 100%{ transform:scale(1) } }
+
+@keyframes shiver{ 0%{ transform: translateX(0) } 25%{ transform: translateX(-4px) } 50%{ transform: translateX(0) } 75%{ transform: translateX(3px) } 100%{ transform: translateX(0) } }
+
+/* responsive tweaks */
+@media (max-width:600px){ .sub{ font-size:13px } .main{ letter-spacing:-3px } }
+
+/* garden-specific */
+#gardenCanvas{ position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none }
+.brand{ position:relative; z-index:3; text-align:center }
+.controls{ position:relative; z-index:3; display:flex; gap:12px; align-items:center; transition:opacity .3s }
+.controls.hidden{ opacity:0; pointer-events:none }
+.brand{ transition:opacity .3s }
+.brand.hidden{ opacity:0; pointer-events:none }
+.ctrl-toggle{ position:fixed; top:12px; right:12px; z-index:10; background:rgba(255,255,255,0.06); color:var(--neon); border:1px solid rgba(255,255,255,0.06); width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:18px }
+.ctrl.rampage{ background:linear-gradient(90deg,#ff6b6b,#ff0000); color:white; border:none }
+.ctrl{ background:rgba(255,255,255,0.06); color:var(--neon); border:1px solid rgba(255,255,255,0.06); padding:8px 14px; border-radius:10px; cursor:pointer; font-weight:700 }
+.ctrl.accent{ background:linear-gradient(90deg,#9bffb6,#6ef0ff); color:#041014; border:none }
+.range{ color:rgba(255,255,255,0.85); font-size:13px; display:flex; gap:8px; align-items:center }
+
+.main{ font-size:clamp(48px,14vw,160px); letter-spacing: -4px; color:var(--neon); text-shadow:0 8px 40px rgba(0,0,0,0.8); }
+
+/* make blobs hidden */
+.blobs{ display:none; }
+
+/* reset button small on mobile */
+@media (max-width:420px){ .controls{ flex-wrap:wrap; justify-content:center } }
+
+/* chaos canvas + panic button */
+#chaosCanvas{ position:fixed; inset:0; width:100vw; height:100vh; z-index:9996; pointer-events:none }
+.controls{ display:flex; gap:12px; align-items:center }
+.panic{ background: linear-gradient(90deg,#ff3b3b,#ff8a00); color:white; border:none; padding:10px 16px; border-radius:10px; font-weight:900; cursor:pointer; box-shadow:0 6px 30px rgba(255,138,0,0.2); transition:transform .08s }
+.panic:active{ transform:scale(.96) }
+
+/* screen shake helper */
+.shake{ animation: screenShake .45s cubic-bezier(.2,.8,.2,1); }
+@keyframes screenShake{ 0%{ transform:none } 20%{ transform:translate(6px,-4px) } 40%{ transform:translate(-6px,4px) } 60%{ transform:translate(4px,-2px) } 80%{ transform:translate(-2px,2px) } 100%{ transform:none } }
+
